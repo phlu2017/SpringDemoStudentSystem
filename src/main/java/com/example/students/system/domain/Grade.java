@@ -27,10 +27,12 @@ public class Grade {
     private long id;
 
     @JsonProperty("c_id")
+    @ManyToOne
     @Column(name="c_id")
     private long c_id;
 
     @JsonProperty("s_id")
+    @ManyToOne
     @Column(name="s_id")
     private long s_id;
 

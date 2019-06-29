@@ -36,14 +36,17 @@ public class Student {
     @JsonProperty("stufirstname")
     @Column(name="stufirstname")
     private String firstname;
+
+    @OneToMany(mappedBy = "student")
+    Set<Grade> grades;
 //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
 //    private Set<Course> courses;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "grade",
-            joinColumns = @JoinColumn(name = "stu_id", referencedColumnName = "stu_id"),
-            inverseJoinColumns = @JoinColumn(name = "c_id", referencedColumnName = "c_id")
-    )
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "grade",
+//            joinColumns = @JoinColumn(name = "stu_id", referencedColumnName = "stu_id"),
+//            inverseJoinColumns = @JoinColumn(name = "c_id", referencedColumnName = "c_id")
+//    )
 //    @JoinTable, or even @JoinColumn isn’t required: JPA will generate the table and column names for us.
 //            However, the strategy JPA uses won’t always match the naming conventions we use.
 //    Hence the possibility to configure table and column names.
