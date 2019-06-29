@@ -11,7 +11,6 @@ public class StudentDto {
     String firstName;
     String lastName;
 
-
     public StudentDto() {
     }
 
@@ -20,4 +19,12 @@ public class StudentDto {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
 }

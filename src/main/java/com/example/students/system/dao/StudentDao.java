@@ -9,9 +9,11 @@ public interface StudentDao extends JpaRepository<Student, Long> {
     //IgnoreCase for Case Insensitive Queries
     public List<Student> findAll();
 
-    public List<Student> findById(int stuId);
+    public List<Student> findById(long stuId);
 
-    public void deleteById(int stuId);
+    public void deleteById(long stuId);
+
+    Student findOneById(long stuId);
 
     //public Student findByStuIdIgnoreCase(String stuId);
 
