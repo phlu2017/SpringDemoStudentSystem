@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -22,9 +23,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 public class Student {
 
-    @Id
+    @Id // Change id type can not find stu_id field, insert id different how to ?
     //@GeneratedValue(strategy=GenerationType.AUTO)
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = IDENTITY)
     @JsonProperty("stu_id")
     @Column(name = "stu_id", updatable = false, nullable = false)
     private long id;
@@ -38,8 +40,31 @@ public class Student {
     private String firstname;
 
     @OneToMany(mappedBy = "student")
-    Set<Grade> grades;
-//    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
+    private Set<Grade> gradeSet = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return id == student.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, lastname, firstname);
+    }
+
+    //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
 //    private Set<Course> courses;
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(
@@ -50,15 +75,6 @@ public class Student {
 //    @JoinTable, or even @JoinColumn isn’t required: JPA will generate the table and column names for us.
 //            However, the strategy JPA uses won’t always match the naming conventions we use.
 //    Hence the possibility to configure table and column names.
-    private Set<Course> courses = new HashSet<>();
+//    private Set<Course> courses = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", lastname='" + lastname + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", courses=" + courses +
-                '}';
-    }
 }
