@@ -3,6 +3,7 @@ package com.example.students.system.controller;
 import com.example.students.system.dao.CourseDao;
 import com.example.students.system.dao.GradeDao;
 import com.example.students.system.dao.StudentDao;
+import com.example.students.system.service.StudentService;
 import com.example.students.system.domain.Grade;
 import com.example.students.system.domain.Student;
 import com.example.students.system.dto.CourseDto;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api")
 @Api
 public class RestSysController {
     @Autowired
@@ -38,7 +39,11 @@ public class RestSysController {
     CourseDao courseDao;
 
     @Autowired
-    StudentServiceImpl studentService;
+    StudentService studentService;
+
+    public RestSysController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @ApiOperation(value = "gets a single Student")
     @GetMapping(value = "/student/{id}")
@@ -69,16 +74,16 @@ public class RestSysController {
     }
 
     @ApiOperation(value = "insert a single getStudent")
-    @PostMapping(value = "/student/")
+    @PostMapping(value = "/student/post/")
     public ResponseEntity<StudentDto> insertStudent(@Valid @RequestBody StudentDto student) {
-        StudentDto studentDto = studentService.createNewStudent(student.getId(), student.getLastName(), student.getFirstName());
+        StudentDto studentDto = studentService.createNewStudent(student);
         if(studentDto==null)
             throw new StudentException("User already exist");
         return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
     }
 
     @ApiOperation(value = "update a single getStudent")
-    @PutMapping(value = "/student/")
+    @PutMapping(value = "/student/update/")
     public StudentDto updateStudent(@Valid @RequestBody StudentDto student) {
         StudentDto studentDto = studentService.updateStudentbyId(student.getId(), student.getLastName(), student.getFirstName());
         if (studentDto==null)
@@ -87,7 +92,7 @@ public class RestSysController {
     }
 
     @ApiOperation(value = "delete a single getStudent")
-    @DeleteMapping(value = "/student/{id}")
+    @DeleteMapping(value = "/student/delete/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable("id") long id) {
         StudentDto studentDto = studentService.deleteStudentbyId(id);
         if(studentDto==null)

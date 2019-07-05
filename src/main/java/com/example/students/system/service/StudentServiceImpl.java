@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service("StudentService")
-public class StudentServiceImpl implements SutdentService{
+public class StudentServiceImpl implements StudentService{
 
     @Autowired
     StudentDao studentDao;
@@ -49,13 +49,14 @@ public class StudentServiceImpl implements SutdentService{
     }
 
     @Override
-    public StudentDto createNewStudent(long id, String lastName, String firstName ) {
-        if(studentDao.findOneById(id)!=null)
+    //public StudentDto createNewStudent(long id, String lastName, String firstName ) {
+    public StudentDto createNewStudent(StudentDto studentDto ) {
+        if(studentDao.findOneById(studentDto.getId())!=null)
             return null;
         Student student = new Student();
-        student.setFirstname(firstName);
-        student.setLastname(lastName);
-        student.setId(id);
+        student.setFirstname(studentDto.getFirstName());
+        student.setLastname(studentDto.getLastName());
+        student.setId(studentDto.getId());
         //System.out.println( student.toString());
         studentDao.save(student);
         return convertSingleObject(student);
