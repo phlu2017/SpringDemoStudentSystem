@@ -16,12 +16,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @JsonProperty("account")
-    @Column(name="`account`")
-    private String account;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="`id`")
+    private String id;
+
 
     @JsonProperty("pwd")
     @Column(name="`pwd`")

@@ -1,36 +1,44 @@
 package com.example.students.system.controller;
 
 import com.example.students.system.domain.User;
+import com.example.students.system.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.example.students.system.dao.UserDao;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController
+@Controller
 public class LoginController {
     @Autowired
-    UserDao user;
+    UserService userService;
 
-    @RequestMapping("/home")
-    public String hello() {
-        return "Welcome to Websparrow";
+    @RequestMapping("/")
+    public ModelAndView  Login() {
+        ModelAndView view = new ModelAndView("Login");
+        return view;
     }
 
-    @PostMapping("/what")
-    public ResponseEntity authenticateUser ( @RequestParam("account") String account, @RequestParam("pwd") String pwd){
-        if(account==null || account.length()==0)
-            return new ResponseEntity("User info wrong",HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/login")
+    public ModelAndView authenticateUser ( HttpServletRequest request){
+        String account = request.getParameter("account");
+        String pwd = request.getParameter("pwd");
+        ModelAndView view = null;
+        if(!userService.verifyUser(account, pwd)){
+            view = new ModelAndView("Login");
+        } else{
+            view = new ModelAndView("main");
 
-        List<User> visiter = user.findByAccountIgnoreCase(account);
-
-        if(visiter.equals(pwd))
-            return new ResponseEntity("hello",HttpStatus.OK);
-        return new ResponseEntity("User info wrong",HttpStatus.BAD_REQUEST);
+            view.addObject("message", account);
+        }
+        return view;
     }
 
 
